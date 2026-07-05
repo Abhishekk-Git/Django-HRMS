@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h3>Add Project</h3>
+    </div>
+
+    <div class="card-body">
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.name.id_for_label }}">Project Name</label>
+                    {{ form.name }}
+                </div>
+
+                <div class="col-12 mb-3">
+                    <div class="form-check">
+                        <input
+                            type="checkbox"
+                            name="is_active"
+                            id="id_is_active"
+                            class="form-check-input"
+                            {% if form.is_active.value %}checked{% endif %}
+                        >
+                        <label class="form-check-label" for="id_is_active">
+                            Active
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.start_date.id_for_label }}">Start Date</label>
+                    {{ form.start_date }}
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <label for="{{ form.end_date.id_for_label }}">End Date</label>
+                    {{ form.end_date }}
+                </div>
+
+                <div class="col-12 mb-3">
+                    <label for="{{ form.description.id_for_label }}">Description</label>
+                    {{ form.description }}
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-success">
+                Save Project
+            </button>
+
+            <a href="{% url 'project_list' %}" class="btn btn-secondary">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

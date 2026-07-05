@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card">
+
+    <div class="card-header d-flex justify-content-between">
+
+        <h3>Task Details</h3>
+
+        <a href="{% url 'task_list' %}" class="btn btn-secondary">
+            Back
+        </a>
+
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-bordered">
+
+            <tr>
+                <th>ID</th>
+                <td>{{ task.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ task.title }}</td>
+            </tr>
+            <tr>
+                <th>Project</th>
+                <td>{{ task.project.name }}</td>
+            </tr>
+            <tr>
+                <th>Assigned Employees</th>
+                <td>
+
+                    {% for employee in task.assigned_to.all %}
+
+                        {{ employee.user.get_full_name }}<br>
+
+                    {% empty %}
+
+                        No Employee Assigned
+
+                    {% endfor %}
+
+                </td>
+            </tr>
+
+            <tr>
+                <th>Description</th>
+                <td>{{ task.description }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ task.get_status_display }}</td>
+            </tr>
+            <tr>
+                <th>Priority</th>
+                <td>{{ task.get_priority_display }}</td>
+            </tr>
+            <tr>
+                <th>Due Date</th>
+                <td>{{ task.due_date }}</td>
+            </tr>
+
+            <tr>
+                <th>Created By</th>
+                <td>{{ task.created_by.user.get_full_name }}</td>
+            </tr>
+            </tr>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

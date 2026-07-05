@@ -1,5 +1,7 @@
 from django.db import models
 from departments.models import Department
+from core.models import BaseModel
+
 
 # Create your models here.
 
@@ -11,6 +13,12 @@ class Designation(models.Model):
         Department,
         on_delete=models.CASCADE,
         related_name="designations"
+    )
+    is_active = models.BooleanField(
+        default=True
+    )
+    description = models.TextField(
+        blank=True
     )
 
     def __str__(self):

@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db import transaction
 
 from employees.models import Employee
+from django.contrib.auth.models import Group
 
 User = get_user_model()
 
@@ -10,7 +11,7 @@ class EmployeeService:
 
     @staticmethod
     @transaction.atomic
-    def create_employee(form):
+    def create_employee(form, request=None):
 
         user = User.objects.create_user(
 
@@ -24,6 +25,8 @@ class EmployeeService:
 
             password=form.cleaned_data["password"],
         )
+        employee_group = Group.objects.get(name="Employee")
+        user.groups.add(employee_group)
 
         employee = form.save(commit=False)
         employee.employee_code = EmployeeService.generate_employee_code()

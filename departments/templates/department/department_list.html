@@ -1,0 +1,170 @@
+{% extends "base.html" %} {% block content %}
+
+
+<div class="page-header">
+    <div>
+        <h1>Departments</h1>
+        <p class="page-subtitle">Organize teams and reporting groups.</p>
+    </div>
+
+    <div class="toolbar">
+        <form method="get">
+
+            <div class="input-group">
+
+                <input
+                    type="text"
+                    name="search"
+                    class="form-control"
+                    placeholder="Search department..."
+                    value="{{ search_query }}"
+                >
+
+                <button class="btn btn-primary">
+
+                    Search
+
+                </button>
+
+            </div>
+
+        </form>
+        {% if request.user.is_hr or request.user.is_superuser %}
+            <a
+                    href="{% url 'department_create' %}"
+                    class="btn btn-primary"
+                >
+                    Add Department
+                </a>
+        {% endif %}
+    </div>
+
+    
+
+</div>
+
+
+<div class="table-panel table-responsive">
+<table class="table table-hover align-middle">
+  <thead>
+  <tr>
+    <th>ID</th>
+
+
+    <th>Name</th>
+
+    <th>Description</th>
+
+    <th>Active</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  {% for department in departments %}
+
+  <tr>
+    <td class="text-muted">#{{ department.id }}</td>
+
+    <td>{{ department.name }}</td>
+
+    <td>{{ department.description }}</td>
+
+    <td>
+      {% if department.is_active %}
+        <span class="badge-soft-success">Active</span>
+      {% else %}
+        <span class="badge-soft-secondary">Inactive</span>
+      {% endif %}
+    </td>
+    <td class="text-nowrap">
+    <a
+        href="{% url 'department_details' department.pk %}"
+        class="btn btn-success btn-sm"
+    >
+        View
+    </a>
+
+    {% if request.user.is_hr or request.user.is_superuser %}
+        <a
+            href="{% url 'department_update' department.pk %}"
+            class="btn btn-warning btn-sm"
+        >
+            Edit
+        </a>
+
+        <a
+            href="{% url 'department_delete' department.pk %}"
+            class="btn btn-danger btn-sm"
+        >
+            Delete
+        </a>
+    {% endif %}
+
+</td>
+  </tr>
+
+  {% empty %}
+
+  <tr>
+    <td colspan="5" class="empty-state">No departments found.</td>
+  </tr>
+
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+
+    <nav>
+
+        <ul class="pagination">
+
+            {% if page_obj.has_previous %}
+
+            <li class="page-item">
+
+                <a
+                    class="page-link"
+                    href="?{% if search_query %}search={{ search_query }}&{% endif %}page={{ page_obj.previous_page_number }}"
+                >
+
+                    Previous
+
+                </a>
+
+            </li>
+
+            {% endif %}
+
+            <li class="page-item active">
+
+                <span class="page-link">
+
+                    {{ page_obj.number }}
+
+                </span>
+
+            </li>
+
+            {% if page_obj.has_next %}
+
+            <li class="page-item">
+
+                <a
+                    class="page-link"
+                    href="?{% if search_query %}search={{ search_query }}&{% endif %}page={{ page_obj.next_page_number }}"
+                >
+
+                    Next
+
+                </a>
+
+            </li>
+
+            {% endif %}
+
+        </ul>
+
+    </nav>
+
+{% endblock %}

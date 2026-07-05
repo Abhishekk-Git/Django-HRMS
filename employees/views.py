@@ -1,20 +1,19 @@
 from django.contrib import messages
-
 from django.http import HttpResponseRedirect
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.shortcuts import render
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse_lazy
+from django.contrib.auth import get_user_model
+from django.db.models import Q
+from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
+from core.mixins import HRRequiredMixin, BaseLoginMixin
+
 from .models import Employee
 from .forms import EmployeeCreateForm, EmployeeUpdateForm
-from django.views.generic import ListView, CreateView, UpdateView, DetailView, DeleteView
-from django.contrib.auth import get_user_model
 from .services import EmployeeService
-from django.db.models import Q
-# Create your views here.
 
 User = get_user_model()
 
-class EmployeeListView(LoginRequiredMixin, ListView):
+class EmployeeListView(BaseLoginMixin, ListView):
     model = Employee
     template_name = 'employees/employee_list.html'
     context_object_name = 'employees'
@@ -28,6 +27,8 @@ class EmployeeListView(LoginRequiredMixin, ListView):
             "user",
             "department",
             "designation",
+        ).filter(
+            is_active=True,
         )
 
         search = self.request.GET.get("search")
@@ -42,9 +43,14 @@ class EmployeeListView(LoginRequiredMixin, ListView):
             )
 
         return queryset.order_by("employee_code")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["search_query"] = self.request.GET.get("search", "")
+        return context
     
     
-class EmployeeCreateView(LoginRequiredMixin, CreateView):
+class EmployeeCreateView(HRRequiredMixin, CreateView):
     model = Employee
     template_name = 'employees/employee_form.html'
     form_class = EmployeeCreateForm
@@ -59,23 +65,23 @@ class EmployeeCreateView(LoginRequiredMixin, CreateView):
             self.get_success_url()
         )
     
-class EmployeeDetailView(LoginRequiredMixin,DetailView):
+class EmployeeDetailView(BaseLoginMixin ,DetailView):
     model = Employee
     template_name = 'employees/employee_details.html'
     context_object_name = 'employee'
     
     def get_queryset(self):
-        return Employee.objects.select_related('user', 'department', 'designation')
+        return Employee.objects.select_related('user', 'department', 'designation').filter(is_active=True)
     
     
-class EmployeeUpdateView(LoginRequiredMixin, UpdateView):
+class EmployeeUpdateView(HRRequiredMixin, UpdateView):
     model = Employee
     form_class = EmployeeUpdateForm
     template_name = "employees/employee_form.html"
     success_url = reverse_lazy("employee_list")
     
     
-class EmployeeDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class EmployeeDeleteView(HRRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Employee
     template_name = "employees/employee_confirm_delete.html"
     permission_required = "employees.delete_employee"

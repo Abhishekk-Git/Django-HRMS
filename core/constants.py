@@ -1,0 +1,5 @@
+EMPLOYEE_GROUP = "Employee"
+
+HR_GROUP = "HR"
+
+ADMIN_GROUP = "Admin"

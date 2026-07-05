@@ -7,6 +7,20 @@ from .forms import LoginForm
 from .services import AuthenticationService
 
 
+def get_redirect_url(user):
+    print("user", user)
+
+    if user.is_superuser:
+        return "admin:index"
+
+    if user.is_hr:
+        return "dashboard"
+
+    if user.is_employee:
+        return "dashboard"
+
+    return "login"
+
 class LoginView(View):
 
     template_name = "accounts/login.html"
@@ -40,6 +54,7 @@ class LoginView(View):
         username = form.cleaned_data["username"]
 
         password = form.cleaned_data["password"]
+        print(username, password)
 
         user = AuthenticationService.authenticate_user(
             username,
@@ -55,7 +70,7 @@ class LoginView(View):
                 f"Welcome {user.first_name}"
             )
 
-            return redirect("employee_list")
+            return redirect(get_redirect_url(user))
 
         messages.error(
             request,
@@ -74,7 +89,7 @@ class LoginView(View):
 
             if request.user.is_authenticated:
 
-                return redirect("employee_list")
+                return redirect(get_redirect_url(request.user))
 
             return super().dispatch(
                 request,

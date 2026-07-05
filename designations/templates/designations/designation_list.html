@@ -1,0 +1,165 @@
+{% extends "base.html" %} {% block content %}
+
+
+<div class="page-header">
+    <div>
+        <h1>Designations</h1>
+        <p class="page-subtitle">Maintain job titles by department.</p>
+    </div>
+
+    <div class="toolbar">
+        <form method="get">
+
+            <div class="input-group">
+
+                <input
+                    type="text"
+                    name="search"
+                    class="form-control"
+                    placeholder="Search designation..."
+                    value="{{ search_query }}"
+                >
+
+                <button class="btn btn-primary">
+
+                    Search
+
+                </button>
+
+            </div>
+
+        </form>
+        {% if request.user.is_hr or request.user.is_superuser %}
+            <a
+                    href="{% url 'designation_create' %}"
+                    class="btn btn-primary"
+                >
+                    Add Designation
+                </a>
+        {% endif %}
+    </div>
+
+    
+
+</div>
+
+
+<div class="table-panel table-responsive">
+<table class="table table-hover align-middle">
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Department</th>
+    <th>Description</th>
+
+    <th>Active</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  {% for designation in designations %}
+
+  <tr>
+    <td class="text-muted">#{{ designation.id }}</td>
+
+    <td>{{ designation.title }}</td>
+    <td><a href="{% url 'department_details' designation.department.pk %}">{{ designation.department.name }}</a></td>
+
+    <td>{{ designation.description }}</td>
+
+    <td>
+      {% if designation.is_active %}
+        <span class="badge-soft-success">Active</span>
+      {% else %}
+        <span class="badge-soft-secondary">Inactive</span>
+      {% endif %}
+    </td>
+    <td class="text-nowrap">
+
+    {% if request.user.is_hr or request.user.is_superuser %}
+        <a
+            href="{% url 'designation_update' designation.pk %}"
+            class="btn btn-warning btn-sm"
+        >
+            Edit
+        </a>
+
+        <a
+            href="{% url 'designation_delete' designation.pk %}"
+            class="btn btn-danger btn-sm"
+        >
+            Delete
+        </a>
+    {% else %}
+        <span class="text-muted">View only</span>
+    {% endif %}
+
+</td>
+  </tr>
+
+  {% empty %}
+
+  <tr>
+    <td colspan="6" class="empty-state">No designation found.</td>
+  </tr>
+
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+
+    <nav>
+
+        <ul class="pagination">
+
+            {% if page_obj.has_previous %}
+
+            <li class="page-item">
+
+                <a
+                    class="page-link"
+                    href="?{% if search_query %}search={{ search_query }}&{% endif %}page={{ page_obj.previous_page_number }}"
+                >
+
+                    Previous
+
+                </a>
+
+            </li>
+
+            {% endif %}
+
+            <li class="page-item active">
+
+                <span class="page-link">
+
+                    {{ page_obj.number }}
+
+                </span>
+
+            </li>
+
+            {% if page_obj.has_next %}
+
+            <li class="page-item">
+
+                <a
+                    class="page-link"
+                    href="?{% if search_query %}search={{ search_query }}&{% endif %}page={{ page_obj.next_page_number }}"
+                >
+
+                    Next
+
+                </a>
+
+            </li>
+
+            {% endif %}
+
+        </ul>
+
+    </nav>
+
+{% endblock %}

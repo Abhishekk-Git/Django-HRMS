@@ -1,10 +1,13 @@
 {% extends "base.html" %} {% block content %}
 
 
-<div class="d-flex justify-content-between mb-3">
+<div class="page-header">
+    <div>
+        <h1>Employees</h1>
+        <p class="page-subtitle">Manage employee records, departments, and designations.</p>
+    </div>
 
-    <h2>Employees</h2>
-    <div class="d-flex gap-2 align-items-center">
+    <div class="toolbar">
         <form method="get">
 
             <div class="input-group">
@@ -14,7 +17,7 @@
                     name="search"
                     class="form-control"
                     placeholder="Search employee..."
-                    value="{{ request.GET.search }}"
+                    value="{{ search_query }}"
                 >
 
                 <button class="btn btn-primary">
@@ -26,12 +29,14 @@
             </div>
 
         </form>
-        <a
-                href="{% url 'employee_create' %}"
-                class="btn btn-success"
-            >
-                Add Employee
-            </a>
+        {% if request.user.is_hr or request.user.is_superuser %}
+            <a
+                    href="{% url 'employee_create' %}"
+                    class="btn btn-primary"
+                >
+                    Add Employee
+                </a>
+        {% endif %}
     </div>
 
     
@@ -39,7 +44,9 @@
 </div>
 
 
-<table class="table table-bordered">
+<div class="table-panel table-responsive">
+<table class="table table-hover align-middle">
+  <thead>
   <tr>
     <th>ID</th>
 
@@ -50,13 +57,15 @@
     <th>Department</th>
 
     <th>Designation</th>
-    <th>Action  </th>
+    <th>Actions</th>
   </tr>
+  </thead>
 
+  <tbody>
   {% for employee in employees %}
 
   <tr>
-    <td>{{ employee.id }}</td>
+    <td class="text-muted">#{{ employee.id }}</td>
 
     <td>{{ employee.employee_code }}</td>
 
@@ -71,7 +80,7 @@
     <td>{{ employee.department }}</td>
 
     <td>{{ employee.designation }}</td>
-    <td>
+    <td class="text-nowrap">
 
     <a
         href="{% url 'employee_details' employee.pk %}"
@@ -80,30 +89,34 @@
         View
     </a>
 
-    <a
-        href="{% url 'employee_update' employee.pk %}"
-        class="btn btn-warning btn-sm"
-    >
-        Edit
-    </a>
+    {% if request.user.is_hr or request.user.is_superuser %}
+        <a
+            href="{% url 'employee_update' employee.pk %}"
+            class="btn btn-warning btn-sm"
+        >
+            Edit
+        </a>
 
-    <a
-        href="{% url 'employee_delete' employee.pk %}"
-        class="btn btn-danger btn-sm"
-    >
-        Delete
-    </a>
+        <a
+            href="{% url 'employee_delete' employee.pk %}"
+            class="btn btn-danger btn-sm"
+        >
+            Delete
+        </a>
+    {% endif %}
 
 </td>
   </tr>
   {% empty %}
 
   <tr>
-    <td colspan="5" class="text-center">No employees found.</td>
+    <td colspan="6" class="empty-state">No employees found.</td>
   </tr>
 
   {% endfor %}
+  </tbody>
 </table>
+</div>
 
 <nav>
 
@@ -115,7 +128,7 @@
 
             <a
                 class="page-link"
-                href="?page={{ page_obj.previous_page_number }}"
+                href="?{% if search_query %}search={{ search_query }}&{% endif %}page={{ page_obj.previous_page_number }}"
             >
 
                 Previous
@@ -142,7 +155,7 @@
 
             <a
                 class="page-link"
-                href="?page={{ page_obj.next_page_number }}"
+                href="?{% if search_query %}search={{ search_query }}&{% endif %}page={{ page_obj.next_page_number }}"
             >
 
                 Next

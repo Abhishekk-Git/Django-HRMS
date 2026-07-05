@@ -1,0 +1,260 @@
+:root {
+  --app-bg: #f4f7fb;
+  --app-surface: #ffffff;
+  --app-ink: #182230;
+  --app-muted: #667085;
+  --app-line: #d9e2ec;
+  --app-primary: #1d5f8f;
+  --app-primary-dark: #164b70;
+  --app-accent: #2f9e8f;
+  --app-warning: #b7791f;
+  --app-danger: #c2410c;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--app-ink);
+  background: var(--app-bg);
+  font-size: 15px;
+}
+
+a {
+  color: var(--app-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--app-primary-dark);
+}
+
+.app-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+  background: #12344d;
+  box-shadow: 0 12px 30px rgba(18, 52, 77, 0.16);
+}
+
+.navbar-brand {
+  letter-spacing: 0;
+}
+
+.navbar .nav-link {
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link:focus {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.app-shell {
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.page-header h1,
+.page-header h2 {
+  margin: 0;
+  font-size: clamp(1.45rem, 2vw, 1.9rem);
+  font-weight: 700;
+}
+
+.page-subtitle {
+  margin: 0.25rem 0 0;
+  color: var(--app-muted);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+.toolbar form {
+  min-width: min(100%, 340px);
+}
+
+.card,
+.table-panel {
+  border: 1px solid var(--app-line);
+  border-radius: 8px;
+  background: var(--app-surface);
+  box-shadow: 0 16px 40px rgba(16, 24, 40, 0.07);
+}
+
+.card-header {
+  background: #fff;
+  border-bottom-color: var(--app-line);
+}
+
+.stat-card {
+  height: 100%;
+  padding: 1.15rem;
+}
+
+.stat-label {
+  margin-bottom: 0.35rem;
+  color: var(--app-muted);
+  font-weight: 600;
+}
+
+.stat-value {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.stat-accent {
+  width: 44px;
+  height: 4px;
+  margin-top: 0.9rem;
+  border-radius: 999px;
+  background: var(--app-accent);
+}
+
+.table-panel {
+  overflow: hidden;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.table thead th,
+.table tbody tr:first-child th {
+  color: #475467;
+  background: #f8fafc;
+  border-bottom: 1px solid var(--app-line);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.table td,
+.table th {
+  padding: 0.85rem 1rem;
+  vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+  background-color: #f6fbff;
+}
+
+.badge-soft-success,
+.badge-soft-secondary,
+.badge-soft-warning,
+.badge-soft-danger,
+.badge-soft-info {
+  border-radius: 999px;
+  padding: 0.35rem 0.65rem;
+  font-weight: 700;
+}
+
+.badge-soft-success {
+  color: #027a48;
+  background: #ecfdf3;
+}
+
+.badge-soft-secondary {
+  color: #475467;
+  background: #f2f4f7;
+}
+
+.badge-soft-warning {
+  color: #92400e;
+  background: #fffbeb;
+}
+
+.badge-soft-danger {
+  color: #b42318;
+  background: #fef3f2;
+}
+
+.badge-soft-info {
+  color: #175cd3;
+  background: #eff8ff;
+}
+
+.btn {
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.btn-primary,
+.btn-success {
+  border-color: var(--app-primary);
+  background: var(--app-primary);
+}
+
+.btn-primary:hover,
+.btn-success:hover {
+  border-color: var(--app-primary-dark);
+  background: var(--app-primary-dark);
+}
+
+.btn-info {
+  color: #fff;
+  border-color: var(--app-accent);
+  background: var(--app-accent);
+}
+
+.btn-warning {
+  color: #fff;
+  border-color: var(--app-warning);
+  background: var(--app-warning);
+}
+
+.btn-danger {
+  border-color: var(--app-danger);
+  background: var(--app-danger);
+}
+
+.form-control,
+.form-select {
+  border-color: #cbd5e1;
+  border-radius: 6px;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--app-primary);
+  box-shadow: 0 0 0 0.2rem rgba(29, 95, 143, 0.16);
+}
+
+.empty-state {
+  padding: 2rem;
+  color: var(--app-muted);
+  text-align: center;
+}
+
+.pagination {
+  margin-top: 1rem;
+}
+
+@media (max-width: 767.98px) {
+  .page-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .toolbar {
+    justify-content: stretch;
+  }
+
+  .toolbar form,
+  .toolbar .btn {
+    width: 100%;
+  }
+}

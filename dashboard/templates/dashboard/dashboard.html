@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Dashboard</h1>
+        <p class="page-subtitle">A quick snapshot of your HR operations.</p>
+    </div>
+</div>
+
+    {% if user.is_hr or user.is_superuser %}        
+
+    <div class="row g-3">
+
+        <div class="col-sm-6 col-xl-3">
+
+            <div class="card stat-card">
+
+                <p class="stat-label">Employees</p>
+
+                <p class="stat-value">{{ employee_count }}</p>
+
+                <div class="stat-accent"></div>
+
+            </div>
+
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+
+            <div class="card stat-card">
+
+                <p class="stat-label">Departments</p>
+
+                <p class="stat-value">{{ department_count }}</p>
+
+                <div class="stat-accent"></div>
+
+            </div>
+
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+
+            <div class="card stat-card">
+
+                <p class="stat-label">Projects</p>
+
+                <p class="stat-value">{{ project_count }}</p>
+
+                <div class="stat-accent"></div>
+
+            </div>
+
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+
+            <div class="card stat-card">
+
+                <p class="stat-label">Pending Tasks</p>
+
+                <p class="stat-value">{{ pending_task_count }}</p>
+
+                <div class="stat-accent"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% else %}  
+    <div class="row g-3">
+
+        <div class="col-sm-6 col-xl-3">
+
+            <div class="card stat-card">
+
+                <p class="stat-label">Total Tasks</p>
+
+                <p class="stat-value">{{ my_tasks }}</p>
+
+                <div class="stat-accent"></div>
+
+            </div>
+
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+
+            <div class="card stat-card">
+
+                <p class="stat-label">Completed</p>
+
+                <p class="stat-value">{{ completed_tasks }}</p>
+
+                <div class="stat-accent"></div>
+
+            </div>
+
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+
+            <div class="card stat-card">
+
+                <p class="stat-label">Pending</p>
+
+                <p class="stat-value">{{ pending_tasks }}</p>
+
+                <div class="stat-accent"></div>
+
+            </div>
+
+        </div>
+
+        <div class="col-sm-6 col-xl-3">
+
+            <div class="card stat-card">
+
+                <p class="stat-label">In Progress</p>
+
+                <p class="stat-value">{{ overdue_tasks }}</p>
+
+                <div class="stat-accent"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+    
+    {% endif %}
+
+{% endblock %}      
